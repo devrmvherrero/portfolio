@@ -1363,7 +1363,7 @@ img {
   background: var(--dark-gray);
   border-radius: var(--radius-lg);
   padding: 2rem;
-  text-align: center;
+  text-align: left;
   transition: var(--transition);
   border: 1px solid var(--light-gray);
   position: relative;
@@ -1415,6 +1415,7 @@ img {
   color: var(--gray);
   font-size: 0.95rem;
   line-height: 1.6;
+  text-align: center;
 }
 
 /* service icon colors */
