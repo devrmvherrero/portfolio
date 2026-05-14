@@ -168,11 +168,17 @@ img {
 }
 
 .logo {
-  font-size: 1.5rem;
   font-weight: 700;
   color: var(--light);
   text-decoration: none;
   transition: var(--transition);
+}
+
+.logo img {
+  height: 50px;
+  margin-top: 5px;
+  width: auto;
+  object-fit: contain;
 }
 
 .logo:hover {
