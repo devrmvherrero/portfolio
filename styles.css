@@ -2525,6 +2525,11 @@ img {
   .tagline {
     font-size: 1rem;
   }
+
+  .tagline::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
   
   .cta-group {
     flex-direction: column;
