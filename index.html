@@ -68,7 +68,7 @@
           <div class="editor-content">
             <div class="code-line"><span class="keyword">const</span> <span class="variable">developer</span> = {</div>
             <div class="code-line">  <span class="property">name</span>: <span class="string">"Reina Maraiah Victoria Herrero"</span>,</div>
-            <div class="code-line">  <span class="property">role</span>: <span class="string">"Sys Dev & Engr."</span>,</div>
+            <div class="code-line">  <span class="property">role</span>: <span class="string">"Sys Dev & Engr.</span>,</div>
             <div class="code-line">  <span class="property">skills</span>: [<span class="string">"Website Development"</span>, <span class="string">"System Design"</span>, <span class="string">"Database Management"</span>, <span class="string">"Virtual Assistance"</span>]</div>
             <div class="code-line">  <span class="property">passion</span>: <span class="string">"Building efficient solutions"</span>,</div>
             <div class="code-line">  <span class="property">status</span>: <span class="string">"Open to opportunities"</span></div>
@@ -1154,6 +1154,105 @@
             break;
         }
       });
+
+      // scrollable dropdown menu for services needed
+      (function initCustomServiceSelect() {
+        const native = document.getElementById('service');
+        if (!native) return;
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'custom-select-wrapper';
+
+        const trigger = document.createElement('div');
+        trigger.className = 'custom-select-trigger';
+
+        const label = document.createElement('span');
+        label.className = 'label';
+        const selectedOption = native.options[native.selectedIndex];
+        label.textContent = selectedOption && selectedOption.value ? selectedOption.text : 'Select a service';
+
+        const arrow = document.createElement('span');
+        arrow.className = 'custom-select-arrow';
+        arrow.innerHTML = '<i class="fas fa-chevron-down"></i>';
+
+        trigger.appendChild(label);
+        trigger.appendChild(arrow);
+
+        const listWrap = document.createElement('div');
+        listWrap.className = 'custom-select-list';
+        const ul = document.createElement('ul');
+
+        Array.from(native.options).forEach(opt => {
+          const li = document.createElement('li');
+          li.textContent = opt.text;
+          li.dataset.value = opt.value;
+          if (opt.disabled) {
+            li.classList.add('disabled');
+            li.style.opacity = '0.6';
+            li.style.pointerEvents = 'none';
+          }
+          if (opt.selected) li.classList.add('selected');
+
+          li.addEventListener('click', () => {
+            native.value = opt.value;
+            label.textContent = opt.text;
+            ul.querySelectorAll('li').forEach(n => n.classList.remove('selected'));
+            li.classList.add('selected');
+            closeList();
+          });
+
+          ul.appendChild(li);
+        });
+
+        listWrap.appendChild(ul);
+        wrapper.appendChild(trigger);
+        wrapper.appendChild(listWrap);
+
+        native.classList.add('hidden-native-select');
+        native.parentNode.insertBefore(wrapper, native.nextSibling);
+
+        function openList() {
+          listWrap.style.display = 'block';
+          document.addEventListener('click', onDocClick);
+        }
+
+        function closeList() {
+          listWrap.style.display = 'none';
+          document.removeEventListener('click', onDocClick);
+        }
+
+        function onDocClick(e) {
+          if (!wrapper.contains(e.target)) closeList();
+        }
+
+        trigger.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (listWrap.style.display === 'block') closeList(); else openList();
+        });
+
+        trigger.tabIndex = 0;
+        trigger.addEventListener('keydown', (e) => {
+          const items = Array.from(ul.querySelectorAll('li'));
+          const current = items.findIndex(i => i.classList.contains('selected'));
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            const next = Math.min(items.length - 1, (current === -1 ? 0 : current + 1));
+            items[next].scrollIntoView({ block: 'nearest' });
+            items[next].click();
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            const prev = Math.max(0, (current === -1 ? 0 : current - 1));
+            items[prev].scrollIntoView({ block: 'nearest' });
+            items[prev].click();
+          } else if (e.key === 'Escape') {
+            closeList();
+          } else if (e.key === 'Enter') {
+            if (listWrap.style.display === 'block') closeList(); else openList();
+          }
+        });
+
+        listWrap.style.display = 'none';
+      })();
     });
   </script>
   
