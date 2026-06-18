@@ -54,6 +54,90 @@ body {
   background-color: var(--dark);
   line-height: 1.6;
   overflow-x: hidden;
+  cursor: none;
+}
+
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(74, 158, 255, 0.95);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: none;
+  transition: transform 0.16s ease, width 0.16s ease, height 0.16s ease, background-color 0.16s ease, border-color 0.16s ease, opacity 0.16s ease;
+  z-index: 9999;
+  opacity: 0.95;
+  mix-blend-mode: difference;
+}
+
+.custom-cursor.custom-cursor--hover {
+  width: 42px;
+  height: 42px;
+  background: rgba(74, 158, 255, 0.18);
+  border-color: rgba(0, 212, 255, 0.95);
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+.custom-cursor.custom-cursor--click {
+  transform: translate(-50%, -50%) scale(0.75);
+  background: rgba(74, 158, 255, 0.35);
+}
+
+.cursor-trail {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(74, 158, 255, 0.55);
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.8);
+  box-shadow: 0 0 18px rgba(74, 158, 255, 0.3);
+  animation: cursorTrailFade 0.4s ease-out forwards;
+  z-index: 9998;
+}
+
+@keyframes cursorTrailFade {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.8);
+  }
+}
+
+.custom-cursor-label {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(0, 212, 255, 0.95);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+
+.custom-cursor.custom-cursor--show-label .custom-cursor-label {
+  opacity: 1;
+  transform: translateX(-50%) translateY(4px);
+}
+
+@media (hover: none), (pointer: coarse) {
+  body {
+    cursor: auto;
+  }
+  .custom-cursor {
+    display: none;
+  }
 }
 
 .container {
