@@ -10,6 +10,9 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <div class="custom-cursor">
+    <span class="custom-cursor-label"></span>
+  </div>
   <!-- nav -->
   <nav class="navbar">
     <div class="container">
@@ -90,7 +93,7 @@
       <div class="about-content">
         <div class="about-top-wrapper">
           <div class="profile-circle">
-            <img src="img/icon.jpg" alt="Reina Maraiah Victoria Herrero" class="profile-image">
+            <img src="img/icon.png" alt="Reina Maraiah Victoria Herrero" class="profile-image">
           </div>
           <div class="about-intro">
             <div class="about-card">
@@ -122,7 +125,7 @@
                 <img src="img/business logo.png" alt="Social Media Manager" loading="lazy">
               </div>
               <div class="role-details">
-                <h4>Social Media Manager</h4>
+                <h4>Founder</h4>
                 <p>H.RMV Tech Solutions</p>
               </div>
             </div>
@@ -753,7 +756,7 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-bottom">
-        <p>&copy; <span id="year"></span> Reina Maraiah Victoria Herrero. All rights reserved.</p>
+        <p>&copy; <span id="year"></span> H.RMV Tech Solutions. All rights reserved.</p>
       </div>
     </div>
   </footer>
@@ -798,6 +801,80 @@
         hamburger.classList.remove('active');
         navLinks.classList.remove('active');
       });
+    });
+
+    // mouse cursor effects
+    const customCursor = document.querySelector('.custom-cursor');
+    const cursorLabel = customCursor.querySelector('.custom-cursor-label');
+
+    let lastTrailTime = 0;
+
+    function createCursorTrail(x, y) {
+      const now = Date.now();
+      if (now - lastTrailTime < 15) return;
+      lastTrailTime = now;
+
+      const trail = document.createElement('span');
+      trail.className = 'cursor-trail';
+      trail.style.left = `${x}px`;
+      trail.style.top = `${y}px`;
+      document.body.appendChild(trail);
+      window.setTimeout(() => {
+        if (trail.parentNode) {
+          trail.parentNode.removeChild(trail);
+        }
+      }, 420);
+    }
+
+    function updateCustomCursor(e) {
+      customCursor.style.left = `${e.clientX}px`;
+      customCursor.style.top = `${e.clientY}px`;
+      createCursorTrail(e.clientX, e.clientY);
+    }
+
+    function getCursorContext(element) {
+      if (!element) return '';
+      const contextMap = [
+        { selector: '.hamburger', label: 'menu' },
+        { selector: '.logo', label: 'home' },
+        { selector: 'a[href$=".pdf"]', label: 'download' },
+        { selector: '.project-link', label: 'view' },
+        { selector: 'a[href^="#"]', label: 'jump' },
+        { selector: '.btn-primary', label: 'send' },
+        { selector: '.btn-secondary', label: 'talk' },
+        { selector: '.testimonial-photo', label: 'zoom' },
+        { selector: '.custom-select-trigger', label: 'choose' },
+        { selector: 'button', label: 'click' },
+        { selector: 'a', label: 'view' }
+      ];
+
+      for (const entry of contextMap) {
+        if (element.closest(entry.selector)) {
+          return entry.label;
+        }
+      }
+
+      return '';
+    }
+
+    function setCursorState(target) {
+      const label = getCursorContext(target);
+      if (label) {
+        cursorLabel.textContent = label;
+        customCursor.classList.add('custom-cursor--hover', 'custom-cursor--show-label');
+      } else {
+        cursorLabel.textContent = '';
+        customCursor.classList.remove('custom-cursor--hover', 'custom-cursor--show-label');
+      }
+    }
+
+    document.addEventListener('mousemove', updateCustomCursor);
+    document.addEventListener('mousedown', () => customCursor.classList.add('custom-cursor--click'));
+    document.addEventListener('mouseup', () => customCursor.classList.remove('custom-cursor--click'));
+
+    document.querySelectorAll('a, button, input, textarea, select, .custom-select-trigger, .project-link, .testimonial-photo, .hamburger, .logo').forEach(el => {
+      el.addEventListener('mouseenter', (event) => setCursorState(event.currentTarget));
+      el.addEventListener('mouseleave', () => setCursorState(null));
     });
     
     // display all badges
