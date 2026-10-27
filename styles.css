@@ -1526,6 +1526,8 @@ img {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
+  grid-template-rows: repeat(4, minmax(50px, 1fr));
+  align-content: stretch;
   flex: 1 1 auto;
 }
 
@@ -2554,6 +2556,8 @@ img {
   
   .apps-grid {
     grid-template-columns: 1fr;
+    grid-template-rows: none;
+    align-content: start;
   }
   
   .roles-container {
